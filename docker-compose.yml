@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  mlmodel:
+    build: .
+    container_name: mlmodel
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+    volumes:
+      - ./:/app
+      - ./data:/app/data
+    stdin_open: true
+    tty: true
+    command: ["--help"]
+    restart: unless-stopped
+  mlmodel_gpu:
+    build:
+      context: .
+      dockerfile: Dockerfile.gpu
+    container_name: mlmodel_gpu
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+    volumes:
+      - ./:/app
+      - ./data:/app/data
+    stdin_open: true
+    tty: true
+    gpus: all
+    command: ["--help"]
+    restart: unless-stopped
